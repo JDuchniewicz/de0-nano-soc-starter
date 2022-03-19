@@ -7,3 +7,6 @@
 [submodule "software/linux-socfpga"]
 	path = software/linux-socfpga
 	url = https://github.com/altera-opensource/linux-socfpga
+[submodule "hardware"]
+	path = hardware
+	url = https://github.com/JDuchniewicz/fpga-tcpdump
