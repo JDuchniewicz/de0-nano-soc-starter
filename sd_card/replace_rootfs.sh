@@ -19,5 +19,8 @@ echo "Moving Ethernet and sshd init fixes"
 cp ./rootfs_old/etc/init.d/S99eth0 ./rootfs/etc/init.d/S99eth0
 cp ./rootfs_old/etc/init.d/S49sshd-fix ./rootfs/etc/init.d/S49sshd-fix
 
+echo "Moving old root's contents"
+cp ./rootfs_old/root/* ./rootfs/root/
+
 echo "Removing old rootfs"
 sudo rm -rf ./rootfs_old
