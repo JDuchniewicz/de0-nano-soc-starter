@@ -1,0 +1,9 @@
+[submodule "software/bootloader/u-boot-socfpga"]
+	path = software/bootloader/u-boot-socfpga
+	url = https://github.com/altera-opensource/u-boot-socfpga
+[submodule "software/buildroot"]
+	path = software/buildroot
+	url = git://git.busybox.net/buildroot
+[submodule "software/linux-socfpga"]
+	path = software/linux-socfpga
+	url = https://github.com/altera-opensource/linux-socfpga
