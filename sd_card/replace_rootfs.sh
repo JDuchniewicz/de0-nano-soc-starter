@@ -1,4 +1,12 @@
 #!/usr/bin/bash
+
+handle_signals() {
+    echo -e "\n Received a signal to exit!\n"
+    exit -1
+}
+
+trap handle_signals SIGINT SIGSTOP SIGQUIT
+
 echo "Renaming old rootfs"
 mv rootfs rootfs_old
 mkdir rootfs
