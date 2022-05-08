@@ -11,7 +11,7 @@ setenv bootimage zImage;
 setenv mmcloadcmd fatload;
 setenv mmcroot /dev/mmcblk0p2;
 setenv mmcload 'mmc rescan;${mmcloadcmd} mmc 0:${mmcloadpart} ${loadaddr} ${bootimage};${mmcloadcmd} mmc 0:${mmcloadpart} ${fdtaddr} ${fdtimage};';
-setenv mmcboot 'setenv bootargs console=ttyS0,115200 root=${mmcroot} rw rootwait earlycon; bootz ${loadaddr} - ${fdtaddr}';
+setenv mmcboot 'setenv bootargs console=ttyS0,115200 root=${mmcroot} rw rootwait earlyprintk; bootz ${loadaddr} - ${fdtaddr}';
 
 run mmcload;
 run mmcboot;
