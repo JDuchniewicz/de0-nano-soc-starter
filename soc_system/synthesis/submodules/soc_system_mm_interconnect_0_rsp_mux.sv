@@ -1,13 +1,13 @@
-// (C) 2001-2015 Altera Corporation. All rights reserved.
-// Your use of Altera Corporation's design tools, logic functions and other 
+// (C) 2001-2019 Intel Corporation. All rights reserved.
+// Your use of Intel Corporation's design tools, logic functions and other 
 // software and tools, and its AMPP partner logic functions, and any output 
-// files any of the foregoing (including device programming or simulation 
+// files from any of the foregoing (including device programming or simulation 
 // files), and any associated documentation or information are expressly subject 
-// to the terms and conditions of the Altera Program License Subscription 
-// Agreement, Altera MegaCore Function License Agreement, or other applicable 
+// to the terms and conditions of the Intel Program License Subscription 
+// Agreement, Intel FPGA IP License Agreement, or other applicable 
 // license agreement, including, without limitation, that your use is for the 
-// sole purpose of programming logic devices manufactured by Altera and sold by 
-// Altera or its authorized distributors.  Please refer to the applicable 
+// sole purpose of programming logic devices manufactured by Intel and sold by 
+// Intel or its authorized distributors.  Please refer to the applicable 
 // agreement for further details.
 
 
@@ -24,10 +24,10 @@
 // agreement for further details.
 
 
-// $Id: //acds/rel/15.0/ip/merlin/altera_merlin_multiplexer/altera_merlin_multiplexer.sv.terp#1 $
+// $Id: //acds/rel/19.1std/ip/merlin/altera_merlin_multiplexer/altera_merlin_multiplexer.sv.terp#1 $
 // $Revision: #1 $
-// $Date: 2015/02/08 $
-// $Author: swbranch $
+// $Date: 2018/11/07 $
+// $Author: psgswbuild $
 
 // ------------------------------------------
 // Merlin Multiplexer
@@ -43,9 +43,9 @@
 //   ARBITRATION_SHARES:  1
 //   ARBITRATION_SCHEME   "no-arb"
 //   PIPELINE_ARB:        0
-//   PKT_TRANS_LOCK:      108 (arbitration locking enabled)
-//   ST_DATA_W:           165
-//   ST_CHANNEL_W:        7
+//   PKT_TRANS_LOCK:      72 (arbitration locking enabled)
+//   ST_DATA_W:           117
+//   ST_CHANNEL_W:        1
 // ------------------------------------------
 
 module soc_system_mm_interconnect_0_rsp_mux
@@ -54,8 +54,8 @@ module soc_system_mm_interconnect_0_rsp_mux
     // Sinks
     // ----------------------
     input                       sink0_valid,
-    input [165-1   : 0]  sink0_data,
-    input [7-1: 0]  sink0_channel,
+    input [117-1   : 0]  sink0_data,
+    input [1-1: 0]  sink0_channel,
     input                       sink0_startofpacket,
     input                       sink0_endofpacket,
     output                      sink0_ready,
@@ -65,8 +65,8 @@ module soc_system_mm_interconnect_0_rsp_mux
     // Source
     // ----------------------
     output                      src_valid,
-    output [165-1    : 0] src_data,
-    output [7-1 : 0] src_channel,
+    output [117-1    : 0] src_data,
+    output [1-1 : 0] src_channel,
     output                      src_startofpacket,
     output                      src_endofpacket,
     input                       src_ready,
@@ -77,13 +77,13 @@ module soc_system_mm_interconnect_0_rsp_mux
     input clk,
     input reset
 );
-    localparam PAYLOAD_W        = 165 + 7 + 2;
+    localparam PAYLOAD_W        = 117 + 1 + 2;
     localparam NUM_INPUTS       = 1;
     localparam SHARE_COUNTER_W  = 1;
     localparam PIPELINE_ARB     = 0;
-    localparam ST_DATA_W        = 165;
-    localparam ST_CHANNEL_W     = 7;
-    localparam PKT_TRANS_LOCK   = 108;
+    localparam ST_DATA_W        = 117;
+    localparam ST_CHANNEL_W     = 1;
+    localparam PKT_TRANS_LOCK   = 72;
 
     assign	src_valid			=  sink0_valid;
     assign	src_data			=  sink0_data;
@@ -92,6 +92,5 @@ module soc_system_mm_interconnect_0_rsp_mux
     assign	src_endofpacket		        =  sink0_endofpacket;
     assign	sink0_ready			=  src_ready;
 endmodule
-
 
 
