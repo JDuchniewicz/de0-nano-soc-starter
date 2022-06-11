@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 #
 # Copyright (c) 2014, Altera Corporation
 # All rights reserved.
@@ -50,26 +50,6 @@ mounted_fs = []
 #  #        ####   #    #   ####    ####
 #
 
-def check_output(*popenargs, **kwargs):
-    r"""Run command with arguments and return its output as a byte string.
-
-    Backported from Python 2.7 as it's implemented as pure python on stdlib.
-
-    >>> check_output(['/usr/bin/python', '--version'])
-    Python 2.6.2
-    """
-    process = subprocess.Popen(stdout=subprocess.PIPE, *popenargs, **kwargs)
-    output, unused_err = process.communicate()
-    retcode = process.poll()
-    if retcode:
-        cmd = kwargs.get("args")
-        if cmd is None:
-            cmd = popenargs[0]
-            error = subprocess.CalledProcessError(retcode, cmd)
-            error.output = output
-        raise error
-    return output
-
 #==============================================================================
 # Convert to bytes
 def convert_size_from_unit(unit_size):
@@ -78,7 +58,7 @@ def convert_size_from_unit(unit_size):
 
     m = re.match("^[0-9]+[KMG]?$", unit_size, re.I)
     if m == None:
-        print "error: "+unit_size+": malformed expression"
+        print ("error: "+unit_size+": malformed expression")
         sys.exit(-1)
     else:
         munit = re.search("[KMG]+$", m.group(0), re.I)
@@ -95,9 +75,9 @@ def convert_size_from_unit(unit_size):
                 factor = 1024*1024*1024
 
     # convert_str_to_int() takes care of handling exceptions
-    size = convert_str_to_int(msize.group(0))*factor
+    size = int(convert_str_to_int(msize.group(0))*factor)
 
-    return size
+    return int(size)
 
 #==============================================================================
 # converts a string to int, with exception handling
@@ -107,7 +87,7 @@ def convert_str_to_int(string):
         integer = int(string)
 
     except ValueError:
-        print "error: "+string+": not a valid number"
+        print ("error: "+string+": not a valid number")
         sys.exit(-1)
 
     return integer
@@ -139,7 +119,7 @@ def parse_single_part_args(part):
             #  need to test for a situation like key=, that is
             #! without a value.
             if value == None:
-                print "error: "+key+": no value found."
+                print ("error: "+key+": no value found.")
                 sys.exit(-1)
 
             # check that a valid key was used
@@ -147,17 +127,17 @@ def parse_single_part_args(part):
                 part_entries[key] = convert_str_to_int(value)
             elif key == 'size':
                 size = convert_size_from_unit(value)
-                part_entries[key] = size
+                part_entries[key] = int(size)
             elif key == 'format':
                 if validate_format(value):
                     part_entries[key] = value
                 else:
-                    print "error:", value, "unknown format"
+                    print ("error:", value, "unknown format")
                     sys.exit(-1)
             elif key == 'type':
                 part_entries[key] = value
             else:
-                print "error:", key,": unknown option"
+                print ("error:", key,": unknown option")
                 sys.exit(-1)
         else:
             part_entries['files'].append(el)
@@ -172,13 +152,13 @@ def parse_all_parts_args(part_args):
 
     num_args = len(part_args)
     if num_args > MAX_PARTITIONS:
-        print "error: up to "+str(MAX_PARTITIONS)+" allowed"
+        print ("error: up to "+str(MAX_PARTITIONS)+" allowed")
         sys.exit(-1)
 
     for part in part_args:
         part_entry = parse_single_part_args(part)
         if part_entry['num'] in part_entries.keys():
-            print "error:"+str(part_entry['num'])+": partition already used"
+            print ("error:"+str(part_entry['num'])+": partition already used")
             sys.exit(-1)
 
         part_entries[part_entry['num']] = part_entry
@@ -197,7 +177,7 @@ def derive_fdisk_type_from_format(pformat):
     elif re.match('^vfat|fat|fat32$', pformat):
         ptype = 'b'
     else:
-        print "error:", pformat,": unknown format"
+        print ("error:", pformat,": unknown format")
         sys.exit(-1)
 
     return ptype
@@ -214,7 +194,7 @@ def derive_fdisk_type_from_ptype(ptype):
     elif ptype == 'swap':
         fdisk_type = '84'
     else:
-        print "error:", ptype,": unknown type"
+        print ("error:", ptype,": unknown type")
         sys.exit(-1)
 
     return fdisk_type
@@ -237,16 +217,16 @@ def check_and_update_part_entries(part_entries, image_size):
         # if type is not set but format is set, we can derive the type
         # as long as the format is not 'raw' or 'none'
         if 'size' not in entry:
-            print "error:", part, ": size must be specified"
+            print ("error:", part, ": size must be specified")
             sys.exit(-1)
         if entry['size'] == 0:
-            print "error:", part, ": size is 0"
+            print ("error:", part, ": size is 0")
             sys.exit(-1)
         total_size = total_size + entry['size']
 
         if 'format' not in entry:
             if 'type' not in entry:
-                print "error:", part,": specify at least format or type"
+                print ("error:", part,": specify at least format or type")
                 sys.exit(-1)
 
             part_entries[part]['fdisk_type'] = derive_fdisk_type_from_ptype(entry['type'])
@@ -266,7 +246,7 @@ def check_and_update_part_entries(part_entries, image_size):
         part_entries[part]['bsize'] = bsize
 
     if total_size > image_size:
-        print "error: partitions are too big to fit in image"
+        print ("error: partitions are too big to fit in image")
         sys.exit(-1)
 
     return part_entries
@@ -298,22 +278,22 @@ def create_empty_image(image_name, image_size, force_erase_image):
             try:
                 os.remove(image_name)
             except OSError:
-                print "error: failed to remove "+image_name+". Exit"
+                print ("error: failed to remove "+image_name+". Exit")
                 sys.exit(-1)
-            print "image removed"
+            print ("image removed")
 
         else:
-            print "user declined"
+            print ("user declined")
             return False
 
     # now we can proceed with the image creation
     # we'll create an empty image to speed things up...
     try:
-        check_output(["dd", "if=/dev/zero", "of="+image_name,"bs=1",
+        subprocess.check_output(["dd", "if=/dev/zero", "of="+image_name,"bs=1",
                                  "count=0", "seek="+str(image_size)],
                                 stderr=subprocess.STDOUT)
     except subprocess.CalledProcessError:
-        print "error: failed to create the image"
+        print ("error: failed to create the image")
         sys.exit(-1)
 
     return True
@@ -326,20 +306,21 @@ def create_loopback(image_name, size, offset=0):
 
     try:
         if offset != 0:
-            device = check_output(
-                  ["losetup", "--show", "-f", "-o "+str(offset),
-                   "--sizelimit", str(size), image_name])
+            device = subprocess.check_output(
+                   ["losetup", "--show", "-f", "-o "+str(offset),
+                    "--sizelimit", str(size), image_name])
         else:
-            device = check_output(
-                        ["losetup", "--show", "-f",
-                         "--sizelimit", str(size), image_name])
+            device = subprocess.check_output(
+                   ["losetup", "--show", "-f",
+                    "--sizelimit", str(size), image_name])
+
     except subprocess.CalledProcessError:
-        print "error: failed to get a loopback device"
+        print ("error: failed to get a loopback device")
         clean_up()
         sys.exit(-1)
 
     # strip trailing \n
-    device = str.rstrip(device)
+    device = str.rstrip(str(device.decode('utf-8')))
     # keep track of the devices used
     loopback_dev_used.append(device)
 
@@ -350,7 +331,7 @@ def create_loopback(image_name, size, offset=0):
 def delete_loopback(device):
 
     try:
-        check_output(["losetup", "-d", str(device)], stderr=subprocess.STDOUT)
+        subprocess.check_output(["losetup", "-d", str(device)], stderr=subprocess.STDOUT)
     except subprocess.CalledProcessError:
         return False
 
@@ -368,7 +349,7 @@ def clean_up():
 
     for device in loopback_dev_used:
         if not delete_loopback(device):
-            print "error: could not delete loopback device", device
+            print ("error: could not delete loopback device", device)
 
 
     return 0
@@ -385,15 +366,16 @@ def create_partition_table(loopback, partition_entries):
 
     # open up a pipe to fdisk
     try:
-        p = subprocess.Popen(["fdisk", loopback, "-u"],
+        p = subprocess.Popen(['fdisk',loopback,"-u"],
                              stdin=subprocess.PIPE,
-                             stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+                             stdout=subprocess.PIPE,
+                             stderr=subprocess.PIPE)
     except OSError:
-        print "error: fdisk: system error"
+        print ("error: fdisk: system error")
         clean_up()
         sys.exit(-1)
     except ValueError:
-        print "error: Popen: invalid args"
+        print ("error: Popen: invalid args")
         clean_up()
         sys.exit(-1)
 
@@ -403,10 +385,11 @@ def create_partition_table(loopback, partition_entries):
         cmd = """\
 n
 p
-"""+str(pentry['num'])+"""
-"""+str(pentry['start'])+"""
-+"""+str(pentry['bsize'])+"""
+"""+str(int(pentry['num']))+"""
+"""+str(int(pentry['start']))+"""
++"""+str(int(pentry['bsize']))+"""
 """
+        cmd = cmd.encode(encoding='UTF-8')
         p.stdin.write(cmd)
 
         # second we set the type
@@ -419,11 +402,11 @@ t
         else:
             cmd = """\
 t
-"""+str(pentry['num'])+"""
+"""+str(int(pentry['num']))+"""
 """+pentry['fdisk_type']+"""
 """
+        cmd = cmd.encode(encoding='UTF-8')
         p.stdin.write(cmd)
-
 
 
     # we need to write and quit
@@ -431,15 +414,19 @@ t
 w
 q
 """
+#    p.stdin.write(cmd)
+#    p.stdin.flush()
+#    p.wait()
+    cmd = cmd.encode(encoding='UTF-8')
     p.communicate(cmd)
 
     # sometimes the kernel does not reload the pattition table
-    #!a little help is needed
+    # a little help is needed
     if p.returncode != 0:
-        pp = subprocess.Popen(["partprobe", loopback])
-        pp.wait()
+        pp = subprocess.run(["partprobe", loopback])
+        print ("Partition return code [", pp.returncode, "]")
         if pp.returncode != 0:
-            print "error: could not reload the partition table from image"
+            print ("error: could not reload the partition table from image")
             sys.exit(-1)
     return
 
@@ -465,7 +452,9 @@ def get_mkfs_params_from_format(pformat):
     params = ""
 
     if re.search("fat32", pformat):
-        params = "-F 32"
+        params = ["-F 32","-I"]
+    elif re.search("vfat", pformat):
+        params = ["-I"]
 
     return params
 
@@ -477,15 +466,19 @@ def format_partition(loopback, fs_format):
     params = get_mkfs_params_from_format(fs_format)
     if cmd:
         if params:
-            p = subprocess.Popen([cmd, loopback, params],
-                                 stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            p = subprocess.Popen([cmd, loopback, *params],
+                                 stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                                 universal_newlines=True)
         else:
             p = subprocess.Popen([cmd, loopback],
-                                 stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+                                 stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                                 universal_newlines=True)
         #RODO: add timeout?
-        p.wait()
+        out,err = p.communicate()
         if p.returncode != 0:
-            print "error: format: failed"
+            print ("error: format: failed. Return code=%d\n" % p.returncode)
+            print ("params=%s, cmd=%s\n" % (params,cmd))
+            print ("stdout=%s\nstderr=%s\n" % (out, err))
             clean_up()
             sys.exit(-1)
 
@@ -507,17 +500,19 @@ def mount_fs(loopback, fs_format):
     try:
         os.mkdir(mp)
     except OSError:
-        print "error: failed to create mount point (", mp,")"
+        print ("error: failed to create mount point (", mp,")")
         clean_up()
         sys.exit(-1)
 
     format = get_mountfs_from_format(fs_format)
 
     p = subprocess.Popen(["mount", "-t", format, loopback, mp],
-                         stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    p.wait()
+                         stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                         universal_newlines=True)
+    out, err = p.communicate()
     if p.returncode != 0:
-        print "error: mount: failed (", loopback, mp,")"
+        print ("error: mount: failed (", loopback, mp,")")
+        print ("stdout=%s\nstderr=%s\n" % (out, err))
         clean_up()
         sys.exit(-1)
 
@@ -532,10 +527,12 @@ def umount_fs(mp):
 
     time.sleep(3)
     p = subprocess.Popen(["umount", mp],
-                         stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    p.wait()
+                         stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                         universal_newlines=True)
+    out, err = p.communicate()
     if p.returncode != 0:
-        print "error: failed to umount", mp
+        print ("error: failed to umount", mp)
+        print ("stdout=%s\nstderr=%s\n" % (out, err))
         sys.exit(-1)
 
     # update the list
@@ -553,7 +550,7 @@ def do_raw_copy(loopback, partition_data):
     for stuff in partition_data['files']:
         # we do accept FILES only, no directories please
         if os.path.isdir(stuff):
-            print "error:", stuff, ": can't copy dirs to raw partitions"
+            print ("error:", stuff, ": can't copy dirs to raw partitions")
             clean_up()
             sys.exit(-1)
 
@@ -561,10 +558,12 @@ def do_raw_copy(loopback, partition_data):
         #! dd if=file of=loopback bs=1 seek=offset
         p = subprocess.Popen(["dd", "if="+stuff, "of="+loopback, "bs=1",
                              "seek="+str(offset)],
-                             stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        p.wait()
+                             stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                             universal_newlines=True)
+        out, err = p.communicate()
         if p.returncode != 0:
-            print "error:", stuff, ": failed to do raw copy"
+            print ("error:", stuff, ": failed to do raw copy")
+            print ("stdout=%s\nstderr=%s\n" % (out, err))
             clean_up()
             sys.exit(-1)
 
@@ -594,12 +593,14 @@ def do_copy(loopback, partition_data):
         #! be added to the list of args passed to Popen
         try:
             p = subprocess.Popen(["cp", cp_opt, mp ] + glob.glob(stuff),
-                                 stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-            p.wait()
+                                 stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                                 universal_newlines=True)
+            out, err = p.communicate()
             if p.returncode:
                 raise Exception([])
         except Exception:
-            print "error: failed to copy", stuff
+            print ("error: failed to copy", stuff)
+            print ("stdout=%s\nstderr=%s\n" % (out, err))
             clean_up()
             sys.exit(-1)
 
@@ -627,10 +628,11 @@ def copy_files_to_partition(loopback, partition_data):
 # create, formats and copt files to partition
 def do_partition(partition, image_name):
 
-    offset_bytes = partition['start'] * 512
+    print("do_partition entry")
+    offset_bytes = int(partition['start'] * 512)
 
     if partition['format'] == "fat32" and partition['size'] < 33554432:
-        print "error: Unable to create a fat32 partition size < 32MB"
+        print ("error: Unable to create a fat32 partition size < 32MB")
         sys.exit(-1)
 
     loopback = create_loopback(image_name, partition['size'], offset_bytes)
@@ -646,22 +648,24 @@ def do_partition(partition, image_name):
 #==============================================================================
 def create_image(image_name, image_size, partition_entries, force_erase_image):
 
-    print "info: creating the image "+image_name
+    print ("info: creating the image "+image_name)
     # first we need an empty image
     if not create_empty_image(image_name, image_size, force_erase_image):
-        print "error: the image file could not be created"
+        print ("error: the image file could not be created")
         sys.exit(-1)
 
     # second, we'll create the partition table
-    print "info: creating the partition table"
+    print ("info: creating the partition table")
+    print ("image_name set to ", image_name)
     loopback = create_loopback(image_name, image_size)
     create_partition_table(loopback, partition_entries)
+    print ("now delete loopback")
     delete_loopback(loopback)
 
     # now we iterate over the partitions
-    print "info: processing partitions..."
+    print ("info: processing partitions...")
     for part in partition_entries.keys():
-        print "     partition #"+str(part)+"..."
+        print ("     partition #"+str(part)+"...")
         do_partition(partition_entries[part], image_name)
 
     return
@@ -699,15 +703,15 @@ args = parser.parse_args()
 
 # Only root can do this
 if not is_user_root():
-    print "error: only root can do this..."
+    print ("error: only root can do this...")
     sys.exit(-1)
 
 # A few checks
 part_entries = parse_all_parts_args(args.part_args)
-image_size = convert_size_from_unit(args.size)
+image_size = int(convert_size_from_unit(args.size))
 part_entries = check_and_update_part_entries(part_entries, image_size)
 
 # we now have what we need
 create_image(args.image_name, image_size, part_entries, args.force_erase_image)
-print "info: image created, file name is ", args.image_name
+print ("info: image created, file name is ", args.image_name)
 

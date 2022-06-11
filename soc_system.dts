@@ -1080,31 +1080,31 @@
 			compatible = "altr,socfpga-hps2fpga-bridge";	/* appended from boardinfo */
 			label = "hps2fpga";	/* appended from boardinfo */
 			clocks = <&l4_main_clk>;	/* appended from boardinfo */
-			status = "enabled";
-            bridge-enable = <1>;
+			//status = "enabled";
+            //bridge-enable = <1>;
 		}; //end fpgabridge@0 (fpgabridge0)
 
 		fpgabridge1: fpgabridge@1 {
 			compatible = "altr,socfpga-lwhps2fpga-bridge";	/* appended from boardinfo */
 			label = "lwhps2fpga";	/* appended from boardinfo */
 			clocks = <&l4_main_clk>;	/* appended from boardinfo */
-			status = "enabled";
-            bridge-enable = <1>;
+			//status = "enabled";
+            //bridge-enable = <1>;
 		}; //end fpgabridge@1 (fpgabridge1)
 
 		fpgabridge2: fpgabridge@2 {
 			compatible = "altr,socfpga-fpga2hps-bridge";	/* appended from boardinfo */
 			label = "fpga2hps";	/* appended from boardinfo */
 			clocks = <&l4_main_clk>;	/* appended from boardinfo */
-			status = "enabled";
-            bridge-enable = <1>;
+			//status = "enabled";
+            //bridge-enable = <1>;
 		}; //end fpgabridge@2 (fpgabridge2)
 
 		fpgabridge3: fpgabridge@3 {
 			compatible = "altr,socfpga-fpga2sdram-bridge";
 			label = "fpga2sdram";	/* appended from boardinfo */
 			clocks = <&l4_main_clk>;	/* appended from boardinfo */
-			status = "enabled";
+			//status = "enabled"; // TODO: uncommenting disables the driver from probing
             bridge-enable = <1>;
 		};
 

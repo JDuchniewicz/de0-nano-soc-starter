@@ -1,8 +1,10 @@
 echo -- Programming FPGA --
 setenv fpgadata 0x2000000;
+mw 0xFFC25080 0x0
 fatload mmc 0:1 $fpgadata soc_system.rbf;
 fpga load 0 $fpgadata $filesize;
-bridge enable;
+mw 0xFFC2505C 0xA
+mw 0xFFC25080 0x1FFF
 
 echo -- Setting Env Variables --
 setenv fdtimage soc_system.dtb;
