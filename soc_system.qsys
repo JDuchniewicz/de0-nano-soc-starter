@@ -456,8 +456,8 @@
   <parameter name="F2SCLK_DBGRST_Enable" value="true" />
   <parameter name="F2SCLK_PERIPHCLK_Enable" value="false" />
   <parameter name="F2SCLK_PERIPHCLK_FREQ" value="0" />
-  <parameter name="F2SCLK_SDRAMCLK_Enable" value="false" />
-  <parameter name="F2SCLK_SDRAMCLK_FREQ" value="0" />
+  <parameter name="F2SCLK_SDRAMCLK_Enable" value="true" />
+  <parameter name="F2SCLK_SDRAMCLK_FREQ" value="50000000" />
   <parameter name="F2SCLK_WARMRST_Enable" value="true" />
   <parameter name="F2SDRAM_Type">Avalon-MM Write-Only,Avalon-MM Read-Only</parameter>
   <parameter name="F2SDRAM_Width" value="256,256" />
@@ -1341,6 +1341,11 @@
    version="19.1"
    start="clk_0.clk"
    end="hps_0.f2h_sdram1_clock" />
+ <connection
+   kind="clock"
+   version="19.1"
+   start="clk_0.clk"
+   end="hps_0.f2h_sdram_ref_clock" />
  <connection
    kind="clock"
    version="19.1"

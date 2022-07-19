@@ -342,6 +342,7 @@ module soc_system (
 		.f2h_cold_rst_req_n       (hps_0_f2h_cold_reset_req_reset_n),                      //  f2h_cold_reset_req.reset_n
 		.f2h_dbg_rst_req_n        (hps_0_f2h_debug_reset_req_reset_n),                     // f2h_debug_reset_req.reset_n
 		.f2h_warm_rst_req_n       (hps_0_f2h_warm_reset_req_reset_n),                      //  f2h_warm_reset_req.reset_n
+		.f2h_sdram_ref_clk        (clk_clk),                                               // f2h_sdram_ref_clock.clk
 		.f2h_stm_hwevents         (hps_0_f2h_stm_hw_events_stm_hwevents),                  //   f2h_stm_hw_events.stm_hwevents
 		.mem_a                    (memory_mem_a),                                          //              memory.mem_a
 		.mem_ba                   (memory_mem_ba),                                         //                    .mem_ba

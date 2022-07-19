@@ -49,14 +49,14 @@ module soc_system_mm_interconnect_0_router_002_default_decode
                DEFAULT_RD_CHANNEL = -1,
                DEFAULT_DESTID = 0 
    )
-  (output [225 - 225 : 0] default_destination_id,
+  (output [223 - 223 : 0] default_destination_id,
    output [2-1 : 0] default_wr_channel,
    output [2-1 : 0] default_rd_channel,
    output [2-1 : 0] default_src_channel
   );
 
   assign default_destination_id = 
-    DEFAULT_DESTID[225 - 225 : 0];
+    DEFAULT_DESTID[223 - 223 : 0];
 
   generate
     if (DEFAULT_CHANNEL == -1) begin : no_default_channel_assignment
@@ -93,7 +93,7 @@ module soc_system_mm_interconnect_0_router_002
     // Command Sink (Input)
     // -------------------
     input                       sink_valid,
-    input  [239-1 : 0]    sink_data,
+    input  [237-1 : 0]    sink_data,
     input                       sink_startofpacket,
     input                       sink_endofpacket,
     output                      sink_ready,
@@ -102,7 +102,7 @@ module soc_system_mm_interconnect_0_router_002
     // Command Source (Output)
     // -------------------
     output                          src_valid,
-    output reg [239-1    : 0] src_data,
+    output reg [237-1    : 0] src_data,
     output reg [2-1 : 0] src_channel,
     output                          src_startofpacket,
     output                          src_endofpacket,
@@ -114,11 +114,11 @@ module soc_system_mm_interconnect_0_router_002
     // -------------------------------------------------------
     localparam PKT_ADDR_H = 175;
     localparam PKT_ADDR_L = 144;
-    localparam PKT_DEST_ID_H = 225;
-    localparam PKT_DEST_ID_L = 225;
-    localparam PKT_PROTECTION_H = 229;
-    localparam PKT_PROTECTION_L = 227;
-    localparam ST_DATA_W = 239;
+    localparam PKT_DEST_ID_H = 223;
+    localparam PKT_DEST_ID_L = 223;
+    localparam PKT_PROTECTION_H = 227;
+    localparam PKT_PROTECTION_L = 225;
+    localparam ST_DATA_W = 237;
     localparam ST_CHANNEL_W = 2;
     localparam DECODER_TYPE = 1;
 

@@ -20,6 +20,8 @@ module soc_system_hps_0_fpga_interfaces(
  ,input wire [1 - 1 : 0 ] f2h_dbg_rst_req_n
 // f2h_warm_reset_req
  ,input wire [1 - 1 : 0 ] f2h_warm_rst_req_n
+// f2h_sdram_ref_clock
+ ,input wire [1 - 1 : 0 ] f2h_sdram_ref_clk
 // f2h_stm_hw_events
  ,input wire [28 - 1 : 0 ] f2h_stm_hwevents
 // f2h_axi_clock
@@ -197,6 +199,9 @@ cyclonev_hps_interface_clocks_resets clocks_resets(
   })
 ,.f2h_dbg_rst_req_n({
     f2h_dbg_rst_req_n[0:0] // 0:0
+  })
+,.f2h_sdram_ref_clk({
+    f2h_sdram_ref_clk[0:0] // 0:0
   })
 ,.h2f_rst_n({
     h2f_rst_n[0:0] // 0:0

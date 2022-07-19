@@ -8,7 +8,7 @@
    <export preferredWidth="155" />
   </columns>
  </systemtable>
- <library expandedCategories="Library,Project" />
+ <library expandedCategories="Project,Library" />
  <window width="2562" height="1402" x="1919" y="39" />
  <hdlexample language="VERILOG" />
  <generation block_symbol_file="0" />

@@ -1,10 +1,44 @@
 echo -- Programming FPGA --
+#mw 0xFFC25080 0x0;
 setenv fpgadata 0x2000000;
-mw 0xFFC25080 0x0
 fatload mmc 0:1 $fpgadata soc_system.rbf;
 fpga load 0 $fpgadata $filesize;
-mw 0xFFC2505C 0xA
-mw 0xFFC25080 0x1FFF
+#echo -- BEfore bridge enable --
+#md 0xFFC2508C;
+#echo -- before bridge enable sdram config registers --
+#md 0xFFC25000;
+
+#mw 0xFFD08080 0x7;
+#mw 0xFFD08084 0x1;
+#mw 0xFFD08088 0x20;
+#mw 0xFFD0808C 0x3FF;
+
+bridge enable;
+
+#echo -- After bridge enable --
+#md 0xFFC2508C;
+#echo -- printing portcfg --
+#md 0xFFC2507C;
+#echo -- after bridge enable sdram config registers --
+#md 0xFFC25000;
+
+#mw 0xFFC2508C 0x0;
+
+#echo -- After manual mw --
+#md 0xFFC2508C;
+#echo -- printing portcfg --
+#md 0xFFC2507C;
+
+#mw 0xFFC2505C 0xA;
+#mw 0xFFC25080 0x1FF;
+
+#bridge enable
+
+# add prints of registers
+# protportdefault + axi/avalon regs
+#echo -- printing portcfg --
+#md 0xFFC2507C;
+
 
 echo -- Setting Env Variables --
 setenv fdtimage soc_system.dtb;

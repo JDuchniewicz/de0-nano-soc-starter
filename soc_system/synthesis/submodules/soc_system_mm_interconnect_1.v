@@ -33,9 +33,9 @@ module soc_system_mm_interconnect_1 (
 	wire          bpfcap_fpga_0_avalon_write_master_1_translator_avalon_universal_master_0_lock;          // bpfcap_fpga_0_avalon_write_master_1_translator:uav_lock -> bpfcap_fpga_0_avalon_write_master_1_agent:av_lock
 	wire          bpfcap_fpga_0_avalon_write_master_1_translator_avalon_universal_master_0_write;         // bpfcap_fpga_0_avalon_write_master_1_translator:uav_write -> bpfcap_fpga_0_avalon_write_master_1_agent:av_write
 	wire   [31:0] bpfcap_fpga_0_avalon_write_master_1_translator_avalon_universal_master_0_writedata;     // bpfcap_fpga_0_avalon_write_master_1_translator:uav_writedata -> bpfcap_fpga_0_avalon_write_master_1_agent:av_writedata
-	wire   [17:0] bpfcap_fpga_0_avalon_write_master_1_translator_avalon_universal_master_0_burstcount;    // bpfcap_fpga_0_avalon_write_master_1_translator:uav_burstcount -> bpfcap_fpga_0_avalon_write_master_1_agent:av_burstcount
+	wire   [15:0] bpfcap_fpga_0_avalon_write_master_1_translator_avalon_universal_master_0_burstcount;    // bpfcap_fpga_0_avalon_write_master_1_translator:uav_burstcount -> bpfcap_fpga_0_avalon_write_master_1_agent:av_burstcount
 	wire          rsp_mux_src_valid;                                                                      // rsp_mux:src_valid -> bpfcap_fpga_0_avalon_write_master_1_agent:rp_valid
-	wire  [116:0] rsp_mux_src_data;                                                                       // rsp_mux:src_data -> bpfcap_fpga_0_avalon_write_master_1_agent:rp_data
+	wire  [114:0] rsp_mux_src_data;                                                                       // rsp_mux:src_data -> bpfcap_fpga_0_avalon_write_master_1_agent:rp_data
 	wire          rsp_mux_src_ready;                                                                      // bpfcap_fpga_0_avalon_write_master_1_agent:rp_ready -> rsp_mux:src_ready
 	wire    [0:0] rsp_mux_src_channel;                                                                    // rsp_mux:src_channel -> bpfcap_fpga_0_avalon_write_master_1_agent:rp_channel
 	wire          rsp_mux_src_startofpacket;                                                              // rsp_mux:src_startofpacket -> bpfcap_fpga_0_avalon_write_master_1_agent:rp_startofpacket
@@ -52,12 +52,12 @@ module soc_system_mm_interconnect_1 (
 	wire          hps_0_f2h_sdram0_data_agent_m0_write;                                                   // hps_0_f2h_sdram0_data_agent:m0_write -> hps_0_f2h_sdram0_data_translator:uav_write
 	wire   [12:0] hps_0_f2h_sdram0_data_agent_m0_burstcount;                                              // hps_0_f2h_sdram0_data_agent:m0_burstcount -> hps_0_f2h_sdram0_data_translator:uav_burstcount
 	wire          hps_0_f2h_sdram0_data_agent_rf_source_valid;                                            // hps_0_f2h_sdram0_data_agent:rf_source_valid -> hps_0_f2h_sdram0_data_agent_rsp_fifo:in_valid
-	wire  [369:0] hps_0_f2h_sdram0_data_agent_rf_source_data;                                             // hps_0_f2h_sdram0_data_agent:rf_source_data -> hps_0_f2h_sdram0_data_agent_rsp_fifo:in_data
+	wire  [367:0] hps_0_f2h_sdram0_data_agent_rf_source_data;                                             // hps_0_f2h_sdram0_data_agent:rf_source_data -> hps_0_f2h_sdram0_data_agent_rsp_fifo:in_data
 	wire          hps_0_f2h_sdram0_data_agent_rf_source_ready;                                            // hps_0_f2h_sdram0_data_agent_rsp_fifo:in_ready -> hps_0_f2h_sdram0_data_agent:rf_source_ready
 	wire          hps_0_f2h_sdram0_data_agent_rf_source_startofpacket;                                    // hps_0_f2h_sdram0_data_agent:rf_source_startofpacket -> hps_0_f2h_sdram0_data_agent_rsp_fifo:in_startofpacket
 	wire          hps_0_f2h_sdram0_data_agent_rf_source_endofpacket;                                      // hps_0_f2h_sdram0_data_agent:rf_source_endofpacket -> hps_0_f2h_sdram0_data_agent_rsp_fifo:in_endofpacket
 	wire          hps_0_f2h_sdram0_data_agent_rsp_fifo_out_valid;                                         // hps_0_f2h_sdram0_data_agent_rsp_fifo:out_valid -> hps_0_f2h_sdram0_data_agent:rf_sink_valid
-	wire  [369:0] hps_0_f2h_sdram0_data_agent_rsp_fifo_out_data;                                          // hps_0_f2h_sdram0_data_agent_rsp_fifo:out_data -> hps_0_f2h_sdram0_data_agent:rf_sink_data
+	wire  [367:0] hps_0_f2h_sdram0_data_agent_rsp_fifo_out_data;                                          // hps_0_f2h_sdram0_data_agent_rsp_fifo:out_data -> hps_0_f2h_sdram0_data_agent:rf_sink_data
 	wire          hps_0_f2h_sdram0_data_agent_rsp_fifo_out_ready;                                         // hps_0_f2h_sdram0_data_agent:rf_sink_ready -> hps_0_f2h_sdram0_data_agent_rsp_fifo:out_ready
 	wire          hps_0_f2h_sdram0_data_agent_rsp_fifo_out_startofpacket;                                 // hps_0_f2h_sdram0_data_agent_rsp_fifo:out_startofpacket -> hps_0_f2h_sdram0_data_agent:rf_sink_startofpacket
 	wire          hps_0_f2h_sdram0_data_agent_rsp_fifo_out_endofpacket;                                   // hps_0_f2h_sdram0_data_agent_rsp_fifo:out_endofpacket -> hps_0_f2h_sdram0_data_agent:rf_sink_endofpacket
@@ -65,59 +65,59 @@ module soc_system_mm_interconnect_1 (
 	wire  [257:0] hps_0_f2h_sdram0_data_agent_rdata_fifo_src_data;                                        // hps_0_f2h_sdram0_data_agent:rdata_fifo_src_data -> hps_0_f2h_sdram0_data_agent_rdata_fifo:in_data
 	wire          hps_0_f2h_sdram0_data_agent_rdata_fifo_src_ready;                                       // hps_0_f2h_sdram0_data_agent_rdata_fifo:in_ready -> hps_0_f2h_sdram0_data_agent:rdata_fifo_src_ready
 	wire          bpfcap_fpga_0_avalon_write_master_1_agent_cp_valid;                                     // bpfcap_fpga_0_avalon_write_master_1_agent:cp_valid -> router:sink_valid
-	wire  [116:0] bpfcap_fpga_0_avalon_write_master_1_agent_cp_data;                                      // bpfcap_fpga_0_avalon_write_master_1_agent:cp_data -> router:sink_data
+	wire  [114:0] bpfcap_fpga_0_avalon_write_master_1_agent_cp_data;                                      // bpfcap_fpga_0_avalon_write_master_1_agent:cp_data -> router:sink_data
 	wire          bpfcap_fpga_0_avalon_write_master_1_agent_cp_ready;                                     // router:sink_ready -> bpfcap_fpga_0_avalon_write_master_1_agent:cp_ready
 	wire          bpfcap_fpga_0_avalon_write_master_1_agent_cp_startofpacket;                             // bpfcap_fpga_0_avalon_write_master_1_agent:cp_startofpacket -> router:sink_startofpacket
 	wire          bpfcap_fpga_0_avalon_write_master_1_agent_cp_endofpacket;                               // bpfcap_fpga_0_avalon_write_master_1_agent:cp_endofpacket -> router:sink_endofpacket
 	wire          router_src_valid;                                                                       // router:src_valid -> cmd_demux:sink_valid
-	wire  [116:0] router_src_data;                                                                        // router:src_data -> cmd_demux:sink_data
+	wire  [114:0] router_src_data;                                                                        // router:src_data -> cmd_demux:sink_data
 	wire          router_src_ready;                                                                       // cmd_demux:sink_ready -> router:src_ready
 	wire    [0:0] router_src_channel;                                                                     // router:src_channel -> cmd_demux:sink_channel
 	wire          router_src_startofpacket;                                                               // router:src_startofpacket -> cmd_demux:sink_startofpacket
 	wire          router_src_endofpacket;                                                                 // router:src_endofpacket -> cmd_demux:sink_endofpacket
 	wire          hps_0_f2h_sdram0_data_agent_rp_valid;                                                   // hps_0_f2h_sdram0_data_agent:rp_valid -> router_001:sink_valid
-	wire  [368:0] hps_0_f2h_sdram0_data_agent_rp_data;                                                    // hps_0_f2h_sdram0_data_agent:rp_data -> router_001:sink_data
+	wire  [366:0] hps_0_f2h_sdram0_data_agent_rp_data;                                                    // hps_0_f2h_sdram0_data_agent:rp_data -> router_001:sink_data
 	wire          hps_0_f2h_sdram0_data_agent_rp_ready;                                                   // router_001:sink_ready -> hps_0_f2h_sdram0_data_agent:rp_ready
 	wire          hps_0_f2h_sdram0_data_agent_rp_startofpacket;                                           // hps_0_f2h_sdram0_data_agent:rp_startofpacket -> router_001:sink_startofpacket
 	wire          hps_0_f2h_sdram0_data_agent_rp_endofpacket;                                             // hps_0_f2h_sdram0_data_agent:rp_endofpacket -> router_001:sink_endofpacket
 	wire          hps_0_f2h_sdram0_data_burst_adapter_source0_valid;                                      // hps_0_f2h_sdram0_data_burst_adapter:source0_valid -> hps_0_f2h_sdram0_data_agent:cp_valid
-	wire  [368:0] hps_0_f2h_sdram0_data_burst_adapter_source0_data;                                       // hps_0_f2h_sdram0_data_burst_adapter:source0_data -> hps_0_f2h_sdram0_data_agent:cp_data
+	wire  [366:0] hps_0_f2h_sdram0_data_burst_adapter_source0_data;                                       // hps_0_f2h_sdram0_data_burst_adapter:source0_data -> hps_0_f2h_sdram0_data_agent:cp_data
 	wire          hps_0_f2h_sdram0_data_burst_adapter_source0_ready;                                      // hps_0_f2h_sdram0_data_agent:cp_ready -> hps_0_f2h_sdram0_data_burst_adapter:source0_ready
 	wire    [0:0] hps_0_f2h_sdram0_data_burst_adapter_source0_channel;                                    // hps_0_f2h_sdram0_data_burst_adapter:source0_channel -> hps_0_f2h_sdram0_data_agent:cp_channel
 	wire          hps_0_f2h_sdram0_data_burst_adapter_source0_startofpacket;                              // hps_0_f2h_sdram0_data_burst_adapter:source0_startofpacket -> hps_0_f2h_sdram0_data_agent:cp_startofpacket
 	wire          hps_0_f2h_sdram0_data_burst_adapter_source0_endofpacket;                                // hps_0_f2h_sdram0_data_burst_adapter:source0_endofpacket -> hps_0_f2h_sdram0_data_agent:cp_endofpacket
 	wire          cmd_demux_src0_valid;                                                                   // cmd_demux:src0_valid -> cmd_mux:sink0_valid
-	wire  [116:0] cmd_demux_src0_data;                                                                    // cmd_demux:src0_data -> cmd_mux:sink0_data
+	wire  [114:0] cmd_demux_src0_data;                                                                    // cmd_demux:src0_data -> cmd_mux:sink0_data
 	wire          cmd_demux_src0_ready;                                                                   // cmd_mux:sink0_ready -> cmd_demux:src0_ready
 	wire    [0:0] cmd_demux_src0_channel;                                                                 // cmd_demux:src0_channel -> cmd_mux:sink0_channel
 	wire          cmd_demux_src0_startofpacket;                                                           // cmd_demux:src0_startofpacket -> cmd_mux:sink0_startofpacket
 	wire          cmd_demux_src0_endofpacket;                                                             // cmd_demux:src0_endofpacket -> cmd_mux:sink0_endofpacket
 	wire          rsp_demux_src0_valid;                                                                   // rsp_demux:src0_valid -> rsp_mux:sink0_valid
-	wire  [116:0] rsp_demux_src0_data;                                                                    // rsp_demux:src0_data -> rsp_mux:sink0_data
+	wire  [114:0] rsp_demux_src0_data;                                                                    // rsp_demux:src0_data -> rsp_mux:sink0_data
 	wire          rsp_demux_src0_ready;                                                                   // rsp_mux:sink0_ready -> rsp_demux:src0_ready
 	wire    [0:0] rsp_demux_src0_channel;                                                                 // rsp_demux:src0_channel -> rsp_mux:sink0_channel
 	wire          rsp_demux_src0_startofpacket;                                                           // rsp_demux:src0_startofpacket -> rsp_mux:sink0_startofpacket
 	wire          rsp_demux_src0_endofpacket;                                                             // rsp_demux:src0_endofpacket -> rsp_mux:sink0_endofpacket
 	wire          router_001_src_valid;                                                                   // router_001:src_valid -> hps_0_f2h_sdram0_data_rsp_width_adapter:in_valid
-	wire  [368:0] router_001_src_data;                                                                    // router_001:src_data -> hps_0_f2h_sdram0_data_rsp_width_adapter:in_data
+	wire  [366:0] router_001_src_data;                                                                    // router_001:src_data -> hps_0_f2h_sdram0_data_rsp_width_adapter:in_data
 	wire          router_001_src_ready;                                                                   // hps_0_f2h_sdram0_data_rsp_width_adapter:in_ready -> router_001:src_ready
 	wire    [0:0] router_001_src_channel;                                                                 // router_001:src_channel -> hps_0_f2h_sdram0_data_rsp_width_adapter:in_channel
 	wire          router_001_src_startofpacket;                                                           // router_001:src_startofpacket -> hps_0_f2h_sdram0_data_rsp_width_adapter:in_startofpacket
 	wire          router_001_src_endofpacket;                                                             // router_001:src_endofpacket -> hps_0_f2h_sdram0_data_rsp_width_adapter:in_endofpacket
 	wire          hps_0_f2h_sdram0_data_rsp_width_adapter_src_valid;                                      // hps_0_f2h_sdram0_data_rsp_width_adapter:out_valid -> rsp_demux:sink_valid
-	wire  [116:0] hps_0_f2h_sdram0_data_rsp_width_adapter_src_data;                                       // hps_0_f2h_sdram0_data_rsp_width_adapter:out_data -> rsp_demux:sink_data
+	wire  [114:0] hps_0_f2h_sdram0_data_rsp_width_adapter_src_data;                                       // hps_0_f2h_sdram0_data_rsp_width_adapter:out_data -> rsp_demux:sink_data
 	wire          hps_0_f2h_sdram0_data_rsp_width_adapter_src_ready;                                      // rsp_demux:sink_ready -> hps_0_f2h_sdram0_data_rsp_width_adapter:out_ready
 	wire    [0:0] hps_0_f2h_sdram0_data_rsp_width_adapter_src_channel;                                    // hps_0_f2h_sdram0_data_rsp_width_adapter:out_channel -> rsp_demux:sink_channel
 	wire          hps_0_f2h_sdram0_data_rsp_width_adapter_src_startofpacket;                              // hps_0_f2h_sdram0_data_rsp_width_adapter:out_startofpacket -> rsp_demux:sink_startofpacket
 	wire          hps_0_f2h_sdram0_data_rsp_width_adapter_src_endofpacket;                                // hps_0_f2h_sdram0_data_rsp_width_adapter:out_endofpacket -> rsp_demux:sink_endofpacket
 	wire          cmd_mux_src_valid;                                                                      // cmd_mux:src_valid -> hps_0_f2h_sdram0_data_cmd_width_adapter:in_valid
-	wire  [116:0] cmd_mux_src_data;                                                                       // cmd_mux:src_data -> hps_0_f2h_sdram0_data_cmd_width_adapter:in_data
+	wire  [114:0] cmd_mux_src_data;                                                                       // cmd_mux:src_data -> hps_0_f2h_sdram0_data_cmd_width_adapter:in_data
 	wire          cmd_mux_src_ready;                                                                      // hps_0_f2h_sdram0_data_cmd_width_adapter:in_ready -> cmd_mux:src_ready
 	wire    [0:0] cmd_mux_src_channel;                                                                    // cmd_mux:src_channel -> hps_0_f2h_sdram0_data_cmd_width_adapter:in_channel
 	wire          cmd_mux_src_startofpacket;                                                              // cmd_mux:src_startofpacket -> hps_0_f2h_sdram0_data_cmd_width_adapter:in_startofpacket
 	wire          cmd_mux_src_endofpacket;                                                                // cmd_mux:src_endofpacket -> hps_0_f2h_sdram0_data_cmd_width_adapter:in_endofpacket
 	wire          hps_0_f2h_sdram0_data_cmd_width_adapter_src_valid;                                      // hps_0_f2h_sdram0_data_cmd_width_adapter:out_valid -> hps_0_f2h_sdram0_data_burst_adapter:sink0_valid
-	wire  [368:0] hps_0_f2h_sdram0_data_cmd_width_adapter_src_data;                                       // hps_0_f2h_sdram0_data_cmd_width_adapter:out_data -> hps_0_f2h_sdram0_data_burst_adapter:sink0_data
+	wire  [366:0] hps_0_f2h_sdram0_data_cmd_width_adapter_src_data;                                       // hps_0_f2h_sdram0_data_cmd_width_adapter:out_data -> hps_0_f2h_sdram0_data_burst_adapter:sink0_data
 	wire          hps_0_f2h_sdram0_data_cmd_width_adapter_src_ready;                                      // hps_0_f2h_sdram0_data_burst_adapter:sink0_ready -> hps_0_f2h_sdram0_data_cmd_width_adapter:out_ready
 	wire    [0:0] hps_0_f2h_sdram0_data_cmd_width_adapter_src_channel;                                    // hps_0_f2h_sdram0_data_cmd_width_adapter:out_channel -> hps_0_f2h_sdram0_data_burst_adapter:sink0_channel
 	wire          hps_0_f2h_sdram0_data_cmd_width_adapter_src_startofpacket;                              // hps_0_f2h_sdram0_data_cmd_width_adapter:out_startofpacket -> hps_0_f2h_sdram0_data_burst_adapter:sink0_startofpacket
@@ -136,7 +136,7 @@ module soc_system_mm_interconnect_1 (
 		.AV_BURSTCOUNT_W             (16),
 		.AV_BYTEENABLE_W             (4),
 		.UAV_ADDRESS_W               (32),
-		.UAV_BURSTCOUNT_W            (18),
+		.UAV_BURSTCOUNT_W            (16),
 		.USE_READ                    (0),
 		.USE_WRITE                   (1),
 		.USE_BEGINBURSTTRANSFER      (0),
@@ -149,7 +149,7 @@ module soc_system_mm_interconnect_1 (
 		.USE_WRITERESPONSE           (0),
 		.AV_SYMBOLS_PER_WORD         (4),
 		.AV_ADDRESS_SYMBOLS          (1),
-		.AV_BURSTCOUNT_SYMBOLS       (0),
+		.AV_BURSTCOUNT_SYMBOLS       (1),
 		.AV_CONSTANT_BURST_BEHAVIOR  (1),
 		.UAV_CONSTANT_BURST_BEHAVIOR (0),
 		.AV_LINEWRAPBURSTS           (0),
@@ -255,32 +255,32 @@ module soc_system_mm_interconnect_1 (
 	);
 
 	altera_merlin_master_agent #(
-		.PKT_ORI_BURST_SIZE_H      (116),
-		.PKT_ORI_BURST_SIZE_L      (114),
-		.PKT_RESPONSE_STATUS_H     (113),
-		.PKT_RESPONSE_STATUS_L     (112),
-		.PKT_QOS_H                 (101),
-		.PKT_QOS_L                 (101),
-		.PKT_DATA_SIDEBAND_H       (99),
-		.PKT_DATA_SIDEBAND_L       (99),
-		.PKT_ADDR_SIDEBAND_H       (98),
-		.PKT_ADDR_SIDEBAND_L       (98),
-		.PKT_BURST_TYPE_H          (97),
-		.PKT_BURST_TYPE_L          (96),
-		.PKT_CACHE_H               (111),
-		.PKT_CACHE_L               (108),
-		.PKT_THREAD_ID_H           (104),
-		.PKT_THREAD_ID_L           (104),
-		.PKT_BURST_SIZE_H          (95),
-		.PKT_BURST_SIZE_L          (93),
+		.PKT_ORI_BURST_SIZE_H      (114),
+		.PKT_ORI_BURST_SIZE_L      (112),
+		.PKT_RESPONSE_STATUS_H     (111),
+		.PKT_RESPONSE_STATUS_L     (110),
+		.PKT_QOS_H                 (99),
+		.PKT_QOS_L                 (99),
+		.PKT_DATA_SIDEBAND_H       (97),
+		.PKT_DATA_SIDEBAND_L       (97),
+		.PKT_ADDR_SIDEBAND_H       (96),
+		.PKT_ADDR_SIDEBAND_L       (96),
+		.PKT_BURST_TYPE_H          (95),
+		.PKT_BURST_TYPE_L          (94),
+		.PKT_CACHE_H               (109),
+		.PKT_CACHE_L               (106),
+		.PKT_THREAD_ID_H           (102),
+		.PKT_THREAD_ID_L           (102),
+		.PKT_BURST_SIZE_H          (93),
+		.PKT_BURST_SIZE_L          (91),
 		.PKT_TRANS_EXCLUSIVE       (73),
 		.PKT_TRANS_LOCK            (72),
-		.PKT_BEGIN_BURST           (100),
-		.PKT_PROTECTION_H          (107),
-		.PKT_PROTECTION_L          (105),
-		.PKT_BURSTWRAP_H           (92),
-		.PKT_BURSTWRAP_L           (92),
-		.PKT_BYTE_CNT_H            (91),
+		.PKT_BEGIN_BURST           (98),
+		.PKT_PROTECTION_H          (105),
+		.PKT_PROTECTION_L          (103),
+		.PKT_BURSTWRAP_H           (90),
+		.PKT_BURSTWRAP_L           (90),
+		.PKT_BYTE_CNT_H            (89),
 		.PKT_BYTE_CNT_L            (74),
 		.PKT_ADDR_H                (67),
 		.PKT_ADDR_L                (36),
@@ -292,13 +292,13 @@ module soc_system_mm_interconnect_1 (
 		.PKT_DATA_L                (0),
 		.PKT_BYTEEN_H              (35),
 		.PKT_BYTEEN_L              (32),
-		.PKT_SRC_ID_H              (102),
-		.PKT_SRC_ID_L              (102),
-		.PKT_DEST_ID_H             (103),
-		.PKT_DEST_ID_L             (103),
-		.ST_DATA_W                 (117),
+		.PKT_SRC_ID_H              (100),
+		.PKT_SRC_ID_L              (100),
+		.PKT_DEST_ID_H             (101),
+		.PKT_DEST_ID_L             (101),
+		.ST_DATA_W                 (115),
 		.ST_CHANNEL_W              (1),
-		.AV_BURSTCOUNT_W           (18),
+		.AV_BURSTCOUNT_W           (16),
 		.SUPPRESS_0_BYTEEN_RSP     (1),
 		.ID                        (0),
 		.BURSTWRAP_VALUE           (1),
@@ -336,19 +336,19 @@ module soc_system_mm_interconnect_1 (
 	);
 
 	altera_merlin_slave_agent #(
-		.PKT_ORI_BURST_SIZE_H      (368),
-		.PKT_ORI_BURST_SIZE_L      (366),
-		.PKT_RESPONSE_STATUS_H     (365),
-		.PKT_RESPONSE_STATUS_L     (364),
-		.PKT_BURST_SIZE_H          (347),
-		.PKT_BURST_SIZE_L          (345),
+		.PKT_ORI_BURST_SIZE_H      (366),
+		.PKT_ORI_BURST_SIZE_L      (364),
+		.PKT_RESPONSE_STATUS_H     (363),
+		.PKT_RESPONSE_STATUS_L     (362),
+		.PKT_BURST_SIZE_H          (345),
+		.PKT_BURST_SIZE_L          (343),
 		.PKT_TRANS_LOCK            (324),
-		.PKT_BEGIN_BURST           (352),
-		.PKT_PROTECTION_H          (359),
-		.PKT_PROTECTION_L          (357),
-		.PKT_BURSTWRAP_H           (344),
-		.PKT_BURSTWRAP_L           (344),
-		.PKT_BYTE_CNT_H            (343),
+		.PKT_BEGIN_BURST           (350),
+		.PKT_PROTECTION_H          (357),
+		.PKT_PROTECTION_L          (355),
+		.PKT_BURSTWRAP_H           (342),
+		.PKT_BURSTWRAP_L           (342),
+		.PKT_BYTE_CNT_H            (341),
 		.PKT_BYTE_CNT_L            (326),
 		.PKT_ADDR_H                (319),
 		.PKT_ADDR_L                (288),
@@ -360,13 +360,13 @@ module soc_system_mm_interconnect_1 (
 		.PKT_DATA_L                (0),
 		.PKT_BYTEEN_H              (287),
 		.PKT_BYTEEN_L              (256),
-		.PKT_SRC_ID_H              (354),
-		.PKT_SRC_ID_L              (354),
-		.PKT_DEST_ID_H             (355),
-		.PKT_DEST_ID_L             (355),
+		.PKT_SRC_ID_H              (352),
+		.PKT_SRC_ID_L              (352),
+		.PKT_DEST_ID_H             (353),
+		.PKT_DEST_ID_L             (353),
 		.PKT_SYMBOL_W              (8),
 		.ST_CHANNEL_W              (1),
-		.ST_DATA_W                 (369),
+		.ST_DATA_W                 (367),
 		.AVS_BURSTCOUNT_W          (13),
 		.SUPPRESS_0_BYTEEN_CMD     (0),
 		.PREVENT_FIFO_OVERFLOW     (1),
@@ -421,7 +421,7 @@ module soc_system_mm_interconnect_1 (
 
 	altera_avalon_sc_fifo #(
 		.SYMBOLS_PER_BEAT    (1),
-		.BITS_PER_SYMBOL     (370),
+		.BITS_PER_SYMBOL     (368),
 		.FIFO_DEPTH          (2),
 		.CHANNEL_WIDTH       (0),
 		.ERROR_WIDTH         (0),
@@ -536,17 +536,17 @@ module soc_system_mm_interconnect_1 (
 	altera_merlin_burst_adapter #(
 		.PKT_ADDR_H                (319),
 		.PKT_ADDR_L                (288),
-		.PKT_BEGIN_BURST           (352),
-		.PKT_BYTE_CNT_H            (343),
+		.PKT_BEGIN_BURST           (350),
+		.PKT_BYTE_CNT_H            (341),
 		.PKT_BYTE_CNT_L            (326),
 		.PKT_BYTEEN_H              (287),
 		.PKT_BYTEEN_L              (256),
-		.PKT_BURST_SIZE_H          (347),
-		.PKT_BURST_SIZE_L          (345),
-		.PKT_BURST_TYPE_H          (349),
-		.PKT_BURST_TYPE_L          (348),
-		.PKT_BURSTWRAP_H           (344),
-		.PKT_BURSTWRAP_L           (344),
+		.PKT_BURST_SIZE_H          (345),
+		.PKT_BURST_SIZE_L          (343),
+		.PKT_BURST_TYPE_H          (347),
+		.PKT_BURST_TYPE_L          (346),
+		.PKT_BURSTWRAP_H           (342),
+		.PKT_BURSTWRAP_L           (342),
 		.PKT_TRANS_COMPRESSED_READ (320),
 		.PKT_TRANS_WRITE           (322),
 		.PKT_TRANS_READ            (323),
@@ -554,10 +554,10 @@ module soc_system_mm_interconnect_1 (
 		.IN_NARROW_SIZE            (0),
 		.OUT_FIXED                 (0),
 		.OUT_COMPLETE_WRAP         (0),
-		.ST_DATA_W                 (369),
+		.ST_DATA_W                 (367),
 		.ST_CHANNEL_W              (1),
 		.OUT_BYTE_CNT_H            (338),
-		.OUT_BURSTWRAP_H           (344),
+		.OUT_BURSTWRAP_H           (342),
 		.COMPRESSED_READ_SUPPORT   (1),
 		.BYTEENABLE_SYNTHESIS      (1),
 		.PIPE_INPUTS               (0),
@@ -658,41 +658,41 @@ module soc_system_mm_interconnect_1 (
 		.IN_PKT_DATA_L                 (0),
 		.IN_PKT_BYTEEN_H               (287),
 		.IN_PKT_BYTEEN_L               (256),
-		.IN_PKT_BYTE_CNT_H             (343),
+		.IN_PKT_BYTE_CNT_H             (341),
 		.IN_PKT_BYTE_CNT_L             (326),
 		.IN_PKT_TRANS_COMPRESSED_READ  (320),
 		.IN_PKT_TRANS_WRITE            (322),
-		.IN_PKT_BURSTWRAP_H            (344),
-		.IN_PKT_BURSTWRAP_L            (344),
-		.IN_PKT_BURST_SIZE_H           (347),
-		.IN_PKT_BURST_SIZE_L           (345),
-		.IN_PKT_RESPONSE_STATUS_H      (365),
-		.IN_PKT_RESPONSE_STATUS_L      (364),
+		.IN_PKT_BURSTWRAP_H            (342),
+		.IN_PKT_BURSTWRAP_L            (342),
+		.IN_PKT_BURST_SIZE_H           (345),
+		.IN_PKT_BURST_SIZE_L           (343),
+		.IN_PKT_RESPONSE_STATUS_H      (363),
+		.IN_PKT_RESPONSE_STATUS_L      (362),
 		.IN_PKT_TRANS_EXCLUSIVE        (325),
-		.IN_PKT_BURST_TYPE_H           (349),
-		.IN_PKT_BURST_TYPE_L           (348),
-		.IN_PKT_ORI_BURST_SIZE_L       (366),
-		.IN_PKT_ORI_BURST_SIZE_H       (368),
-		.IN_ST_DATA_W                  (369),
+		.IN_PKT_BURST_TYPE_H           (347),
+		.IN_PKT_BURST_TYPE_L           (346),
+		.IN_PKT_ORI_BURST_SIZE_L       (364),
+		.IN_PKT_ORI_BURST_SIZE_H       (366),
+		.IN_ST_DATA_W                  (367),
 		.OUT_PKT_ADDR_H                (67),
 		.OUT_PKT_ADDR_L                (36),
 		.OUT_PKT_DATA_H                (31),
 		.OUT_PKT_DATA_L                (0),
 		.OUT_PKT_BYTEEN_H              (35),
 		.OUT_PKT_BYTEEN_L              (32),
-		.OUT_PKT_BYTE_CNT_H            (91),
+		.OUT_PKT_BYTE_CNT_H            (89),
 		.OUT_PKT_BYTE_CNT_L            (74),
 		.OUT_PKT_TRANS_COMPRESSED_READ (68),
-		.OUT_PKT_BURST_SIZE_H          (95),
-		.OUT_PKT_BURST_SIZE_L          (93),
-		.OUT_PKT_RESPONSE_STATUS_H     (113),
-		.OUT_PKT_RESPONSE_STATUS_L     (112),
+		.OUT_PKT_BURST_SIZE_H          (93),
+		.OUT_PKT_BURST_SIZE_L          (91),
+		.OUT_PKT_RESPONSE_STATUS_H     (111),
+		.OUT_PKT_RESPONSE_STATUS_L     (110),
 		.OUT_PKT_TRANS_EXCLUSIVE       (73),
-		.OUT_PKT_BURST_TYPE_H          (97),
-		.OUT_PKT_BURST_TYPE_L          (96),
-		.OUT_PKT_ORI_BURST_SIZE_L      (114),
-		.OUT_PKT_ORI_BURST_SIZE_H      (116),
-		.OUT_ST_DATA_W                 (117),
+		.OUT_PKT_BURST_TYPE_H          (95),
+		.OUT_PKT_BURST_TYPE_L          (94),
+		.OUT_PKT_ORI_BURST_SIZE_L      (112),
+		.OUT_PKT_ORI_BURST_SIZE_H      (114),
+		.OUT_ST_DATA_W                 (115),
 		.ST_CHANNEL_W                  (1),
 		.OPTIMIZE_FOR_RSP              (0),
 		.RESPONSE_PATH                 (1),
@@ -724,41 +724,41 @@ module soc_system_mm_interconnect_1 (
 		.IN_PKT_DATA_L                 (0),
 		.IN_PKT_BYTEEN_H               (35),
 		.IN_PKT_BYTEEN_L               (32),
-		.IN_PKT_BYTE_CNT_H             (91),
+		.IN_PKT_BYTE_CNT_H             (89),
 		.IN_PKT_BYTE_CNT_L             (74),
 		.IN_PKT_TRANS_COMPRESSED_READ  (68),
 		.IN_PKT_TRANS_WRITE            (70),
-		.IN_PKT_BURSTWRAP_H            (92),
-		.IN_PKT_BURSTWRAP_L            (92),
-		.IN_PKT_BURST_SIZE_H           (95),
-		.IN_PKT_BURST_SIZE_L           (93),
-		.IN_PKT_RESPONSE_STATUS_H      (113),
-		.IN_PKT_RESPONSE_STATUS_L      (112),
+		.IN_PKT_BURSTWRAP_H            (90),
+		.IN_PKT_BURSTWRAP_L            (90),
+		.IN_PKT_BURST_SIZE_H           (93),
+		.IN_PKT_BURST_SIZE_L           (91),
+		.IN_PKT_RESPONSE_STATUS_H      (111),
+		.IN_PKT_RESPONSE_STATUS_L      (110),
 		.IN_PKT_TRANS_EXCLUSIVE        (73),
-		.IN_PKT_BURST_TYPE_H           (97),
-		.IN_PKT_BURST_TYPE_L           (96),
-		.IN_PKT_ORI_BURST_SIZE_L       (114),
-		.IN_PKT_ORI_BURST_SIZE_H       (116),
-		.IN_ST_DATA_W                  (117),
+		.IN_PKT_BURST_TYPE_H           (95),
+		.IN_PKT_BURST_TYPE_L           (94),
+		.IN_PKT_ORI_BURST_SIZE_L       (112),
+		.IN_PKT_ORI_BURST_SIZE_H       (114),
+		.IN_ST_DATA_W                  (115),
 		.OUT_PKT_ADDR_H                (319),
 		.OUT_PKT_ADDR_L                (288),
 		.OUT_PKT_DATA_H                (255),
 		.OUT_PKT_DATA_L                (0),
 		.OUT_PKT_BYTEEN_H              (287),
 		.OUT_PKT_BYTEEN_L              (256),
-		.OUT_PKT_BYTE_CNT_H            (343),
+		.OUT_PKT_BYTE_CNT_H            (341),
 		.OUT_PKT_BYTE_CNT_L            (326),
 		.OUT_PKT_TRANS_COMPRESSED_READ (320),
-		.OUT_PKT_BURST_SIZE_H          (347),
-		.OUT_PKT_BURST_SIZE_L          (345),
-		.OUT_PKT_RESPONSE_STATUS_H     (365),
-		.OUT_PKT_RESPONSE_STATUS_L     (364),
+		.OUT_PKT_BURST_SIZE_H          (345),
+		.OUT_PKT_BURST_SIZE_L          (343),
+		.OUT_PKT_RESPONSE_STATUS_H     (363),
+		.OUT_PKT_RESPONSE_STATUS_L     (362),
 		.OUT_PKT_TRANS_EXCLUSIVE       (325),
-		.OUT_PKT_BURST_TYPE_H          (349),
-		.OUT_PKT_BURST_TYPE_L          (348),
-		.OUT_PKT_ORI_BURST_SIZE_L      (366),
-		.OUT_PKT_ORI_BURST_SIZE_H      (368),
-		.OUT_ST_DATA_W                 (369),
+		.OUT_PKT_BURST_TYPE_H          (347),
+		.OUT_PKT_BURST_TYPE_L          (346),
+		.OUT_PKT_ORI_BURST_SIZE_L      (364),
+		.OUT_PKT_ORI_BURST_SIZE_H      (366),
+		.OUT_ST_DATA_W                 (367),
 		.ST_CHANNEL_W                  (1),
 		.OPTIMIZE_FOR_RSP              (0),
 		.RESPONSE_PATH                 (0),
