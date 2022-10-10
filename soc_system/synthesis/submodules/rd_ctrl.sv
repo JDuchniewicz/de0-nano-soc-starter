@@ -17,6 +17,8 @@ module rd_ctrl(input logic clk,
                input logic waitrequest
            );
 
+           // TODO: introduce a dynamic param width equal to readdata'width/
+           // symbol'width == 4
     enum logic [1:0] { IDLE, RUN, DONE } state, state_next;
 
     logic [31:0] reg_control, reg_pkt_begin, reg_pkt_end;
@@ -27,9 +29,11 @@ module rd_ctrl(input logic clk,
                  total_size;
 
     logic [15:0] burst_size;
+    logic [1:0] word_alignment_remainder;
     logic burst_start, burst_end;
 
     assign total_size = (reg_pkt_end - reg_pkt_begin);
+    assign word_alignment_remainder = 4 - (total_burst_remaining % 4);
 
     // counter that counts number of words left to be read (decremented until
     // 0)
@@ -81,7 +85,7 @@ module rd_ctrl(input logic clk,
             address <= reg_pkt_begin;
         end
         else if (burst_end) begin
-            address <= address + burst_size * 'h4;
+            address <= address + burst_size;
         end
 
         if (burst_start) begin
@@ -112,21 +116,19 @@ module rd_ctrl(input logic clk,
             total_burst_remaining <= total_size; // TODO: temp variable name, change
         end
         else if (burst_end) begin
-            total_burst_remaining <= total_burst_remaining - burst_size;
+            total_burst_remaining <= ((total_burst_remaining < 'd16) ? '0 : (total_burst_remaining - 'd16));
         end
 
-        if (waitrequest == 'b0) begin
-            burst_start <= 'b0;
-        end
+        burst_start <= 'b0;
 
         if (start_transfer) begin
             burst_start <= 'b1;
-            burst_size <= total_size < 16 ? total_size : 16;
+            burst_size <= total_size < 'd16 ? total_size : 'd16; // TODO: at least 64 bytes
         end
 
-        if (burst_end && total_burst_remaining > burst_size) begin
+        if (burst_end && total_burst_remaining > '0) begin
             burst_start <= 'b1;
-            burst_size <= total_burst_remaining < 16 ? total_burst_remaining : 16;
+            burst_size <= total_burst_remaining < 'd16 ? (total_burst_remaining + word_alignment_remainder) : 'd16;
         end
 
         if (burst_start) begin
@@ -134,19 +136,24 @@ module rd_ctrl(input logic clk,
         end
         else if (readdatavalid) begin
             if (burst_segment_remaining_count > 'h0) begin
-                burst_segment_remaining_count <= burst_segment_remaining_count -'h1;
+                if (burst_segment_remaining_count < 'h4) begin
+                    burst_segment_remaining_count <= (total_burst_remaining + word_alignment_remainder);
+                end
+                else begin
+                    burst_segment_remaining_count <= burst_segment_remaining_count -'h4;
+                end
             end
         end
 
         burst_end <= 'b0;
-        if (burst_segment_remaining_count == 'h1) begin
+        if (burst_segment_remaining_count <= 'h4 && burst_segment_remaining_count > 'h0) begin // last 4 symbols (word) or less
             burst_end <= 'b1;
         end
 
         rd_ctrl_rdy <= 1'b0;
         done_sending <= 1'b0;
 
-        if (!start_transfer && total_burst_remaining === 0 && !done_sending && state == RUN) begin // just trigger it for one cycle
+        if (!start_transfer && total_burst_remaining <= 'd16  && burst_segment_remaining_count === 0 && burst_end && !done_sending && state == RUN) begin // just trigger it for one cycle
             rd_ctrl_rdy <= 1'b1;
             done_sending <= 1'b1;
         end

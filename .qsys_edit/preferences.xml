@@ -1,14 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <preferences>
  <debug showDebugMenu="0" />
- <systemtable filter="All Interfaces">
+ <systemtable
+   filter="soc_system.hps_0_h2f_reset"
+   showResetDomains="1"
+   showClockDomains="0">
   <columns>
-   <connections preferredWidth="271" />
+   <connections preferredWidth="207" />
    <irq preferredWidth="63" />
    <export preferredWidth="155" />
   </columns>
  </systemtable>
- <library expandedCategories="Project,Library" />
+ <library expandedCategories="Library,Project" />
  <window width="2562" height="1402" x="1919" y="39" />
  <hdlexample language="VERILOG" />
  <generation block_symbol_file="0" />

@@ -14,7 +14,7 @@ module bpfcap_top(input logic clk,
                   output logic avs_m0_read,
                   output logic [15:0] avs_m0_burstcount,
                   input logic avs_m0_readdatavalid,
-                  input logic avs_m0_waitrequest, // TODO: add support of these pins
+                  input logic avs_m0_waitrequest,
                   // second host (wr_ctrl)
                   output logic [31:0] avs_m1_address,
                   output logic [31:0] avs_m1_writedata,
@@ -25,9 +25,11 @@ module bpfcap_top(input logic clk,
 
     logic rd_ctrl_rdy, wr_ctrl_rdy, rd_ctrl, wr_ctrl, new_request;
     logic [1:0] state;
-    logic [31:0] out_control, out_pkt_begin, out_pkt_end, out_write_address;
+    logic busy, done;
+    logic [31:0] out_control, out_pkt_begin, out_pkt_end, out_write_address,
+                 seconds, nanoseconds;
 
-    logic [8:0] usedw; // unused
+    logic [8:0] usedw;
     logic empty, almost_full, rd_from_fifo, wr_to_fifo;
     logic [31:0] fifo_in, fifo_out;
 
@@ -38,6 +40,8 @@ module bpfcap_top(input logic clk,
                                  .write(avs_s0_write),
                                  .readdata(avs_s0_readdata),
                                  .state,
+                                 .busy,
+                                 .done,
                                  .writedata(avs_s0_writedata),
                                  .out_control,
                                  .out_pkt_begin,
@@ -51,7 +55,9 @@ module bpfcap_top(input logic clk,
                              .wr_ctrl_rdy,
                              .rd_ctrl,
                              .wr_ctrl,
-                             .state_out(state)); // TODO: how do we want to store current state  of FSM (as bits in the register of course)
+                             .state_out(state),
+                             .busy,
+                             .done); // TODO: how do we want to store current state  of FSM (as bits in the register of course)
 
     // read ctrl reads packets from memory and puts them in FIFO
     rd_ctrl read_control (.clk,
@@ -83,6 +89,9 @@ module bpfcap_top(input logic clk,
                           .fifo_out,
                           .rd_from_fifo,
                           .wr_ctrl_rdy,
+                          .usedw,
+                          .seconds,
+                          .nanoseconds,
                           .address(avs_m1_address),
                           .writedata(avs_m1_writedata),
                           .write(avs_m1_write),
@@ -98,6 +107,13 @@ module bpfcap_top(input logic clk,
                  .almost_full(almost_full),
                  .q(fifo_out),
                  .usedw(usedw));
+
+    timestamp #(.FREQ(50)) ts
+                           (.clk,
+                            .reset_n(reset), // invert?
+                            .seconds,
+                            .nanoseconds);
+
 
     always_ff @(posedge clk) begin
         if (!reset) begin
