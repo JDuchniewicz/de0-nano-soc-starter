@@ -1,4 +1,3 @@
-
 module pkt_ctrl(input logic new_request,
                 input logic clk,
                 input logic reset,
@@ -77,4 +76,3 @@ module pkt_ctrl(input logic new_request,
     end
 
 endmodule : pkt_ctrl
-
