@@ -16,8 +16,7 @@ Also, I was not able to get the FPGA2SDRAM bridge running using 2 FPGA2HPS bridg
 The power consumption metric could also be improved by utilizing sleep states in the ARM CPU alongside the FPGA.
 
 ### High-level overview
-![image](https://user-images.githubusercontent.com/18423461/217034450-c6b00d01-3826-4766-871a-3cad11b24b1f.png)
-
+<img src="https://user-images.githubusercontent.com/18423461/217034450-c6b00d01-3826-4766-871a-3cad11b24b1f.png" width="70%" />
 
 ### Installation
 Clone the project and it's submodules:
@@ -64,6 +63,8 @@ To see detailed trace logs with timestamps and debug information be sure to enab
 You can view its contents with `cat`:
 `cat /sys/kernel/tracing/trace > trace.log`
 
+Refer to [this link](https://sergioprado.blog/tracing-the-linux-kernel-with-ftrace/) for more information on the tracing topic.
+
 The power was measured with a regular in-socket power meter, but depending on your needs you might want to use something more accurate.
 
 ### Implementation details
@@ -71,3 +72,28 @@ The details concerning implementation of the FPGA part can be seen in the [bpcap
 
 ### Results
 
+The results show no change in consumed power regardless of the packet sizes/clock speed or burst length - 3 metrics being used as the basis of this research. 
+Additionally it can be seen that with rising packet size the time-per-packet metric goes down so it is more feasible to accelerate packets of greater sizes.
+
+#### Capturing time
+<p float="left">
+  <img src="https://user-images.githubusercontent.com/18423461/217039635-896ac1e4-a4a1-47da-8c1a-c02fc4450a85.png" width="30%" />
+  <img src="https://user-images.githubusercontent.com/18423461/217039729-38d58861-908e-48cb-ad88-9a27f3876dd6.png" width="30%" />
+  <img src="https://user-images.githubusercontent.com/18423461/217039824-4f2a9fb3-0649-461d-a91c-d3162fc1c103.png" width="30%" />
+</p>
+
+#### Time-per-packet
+<img src="https://user-images.githubusercontent.com/18423461/217041706-825143d8-cbe6-4044-867d-06c7e26b991c.png" width="50%" />
+
+#### Power consumption
+<img src="https://user-images.githubusercontent.com/18423461/217042130-12336097-8a62-422b-9351-ad163f9189cf.png" width="50%" />
+
+### To be done
+- [ ] Utilize the low power states in the MCU and ensure that power is measured consistently
+- [ ] Parametrize the bus width changing
+- [ ] Testing on a different platform - Antmicro Video Board
+- [ ] Extend XDP program
+- [ ] Implement tcpdump-like filtering
+- [ ] Stress-testing - packet floods etc
+- [ ] FPGA2SDRAM bridge support
+- [ ] Port the project to RISCV?
