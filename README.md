@@ -15,6 +15,10 @@ This project has been tested with Quartus 19.1 IDE version as subsequent version
 Also, I was not able to get the FPGA2SDRAM bridge running using 2 FPGA2HPS bridges (one for sending one for receiving) resulting in maximum bus width of 128 instead of 256 bits.
 The power consumption metric could also be improved by utilizing sleep states in the ARM CPU alongside the FPGA.
 
+### High-level overview
+![image](https://user-images.githubusercontent.com/18423461/217034450-c6b00d01-3826-4766-871a-3cad11b24b1f.png)
+
+
 ### Installation
 Clone the project and it's submodules:
 `git clone --recurse-submodules` 
@@ -46,12 +50,24 @@ Rootfs was built with the Buildroot tool and ultimately the kernel and bootloade
 
 
 ### Testing
-For the testing purposes, the target needs to be running and be tethered using the Ethernet cable to the host. The `bpfcap_fpga` Express Data Path program has to be loaded:
+For the testing purposes, the target needs to be running and be tethered using the Ethernet cable to the host. The `bpfcap_fpga` eXpress Data Path program has to be loaded:
+`ip link set dev eth0 xdpgeneric obj simple.o sec simple` where `simple.o` is our XDP program we cross-compiled on host.
 
+From now on it will be capturing the packets to the pre-reserved memory zone accesible from the kernel or any other user of the SDRAM onboard the target board.
+
+Then, some traffic can be put onto the Ethernet link to test if the capturing is working properly:
+`ping -s 1024 -c 100 -i 0.2 192.168.2.21` where `-s` regulates the size of packets being sent, `-c` is the number of consecutive packets we would like to dump and `-i` is the interval in seconds to wait between packet transfers. 
+
+To see detailed trace logs with timestamps and debug information be sure to enable the `tracefs` subsystem in kernel:
+`mount -t tracefs tracefs /sys/kernel/tracing`
+
+You can view its contents with `cat`:
+`cat /sys/kernel/tracing/trace > trace.log`
+
+The power was measured with a regular in-socket power meter, but depending on your needs you might want to use something more accurate.
 
 ### Implementation details
 The details concerning implementation of the FPGA part can be seen in the [bpcap_fpga](https://github.com/JDuchniewicz/fpga-tcpdump). Similarly, refer to [bpfcap_fpga_sw](https://github.com/JDuchniewicz/fpga-tcpdump-sw) for more information on how patch the kernel drivers and how to compile the software part. Ultimately, the [thesis](https://jduchniewicz.com/FPGA-capture.pdf) contains most complete descriptions about the project.
 
 ### Results
-
 
